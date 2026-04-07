@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>CORE Beta — Social Cards</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brick:   #BF5454;
+  --berry:   #8C0343;
+  --amber:   #D98859;
+  --sand:    #BFAF80;
+  --patina:  #4E7B72;
+  --blush:   #F2AB9B;
+  --cream:   #F2DCC9;
+  --dark:    #2C1810;
+  --bg:      #FAF6F1;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: #111;
+  font-family: 'DM Sans', sans-serif;
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0 60px;
+}
+
+/* ── NAV ── */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(17,17,17,0.95);
+  backdrop-filter: blur(8px);
+  width: 100%;
+  padding: 12px 16px;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  border-bottom: 1px solid rgba(217,136,89,0.3);
+  -webkit-overflow-scrolling: touch;
+}
+.nav a {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--cream);
+  background: rgba(217,136,89,0.15);
+  border: 1px solid rgba(217,136,89,0.3);
+  transition: all 0.2s;
+}
+.nav a:hover, .nav a:active {
+  background: var(--amber);
+  color: var(--dark);
+}
+
+.section-label {
+  width: 100%;
+  max-width: 420px;
+  padding: 40px 20px 12px;
+  font-family: 'Cormorant', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--amber);
+  text-align: center;
+}
+.section-sublabel {
+  width: 100%;
+  max-width: 420px;
+  padding: 0 20px 20px;
+  font-size: 11px;
+  color: rgba(242,220,201,0.4);
+  text-align: center;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-wrap {
+  width: 100%;
+  max-width: 420px;
+  padding: 0 10px;
+  margin-bottom: 24px;
+}
+
+.card-feed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.card-story {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9/16;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.card-square {
+  position: relative;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* ══════════════════════════════════════
+   TEXTURE SYSTEM
+   ══════════════════════════════════════ */
+
+.linen::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0.06;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(242,220,201,0.3) 2px, rgba(242,220,201,0.3) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(242,220,201,0.3) 2px, rgba(242,220,201,0.3) 3px);
+  pointer-events: none;
+}
+.linen-dark::before { opacity: 0.06; }
+.linen-light::before {
+  opacity: 0.05;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(44,24,16,0.1) 2px, rgba(44,24,16,0.1) 3px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(44,24,16,0.1) 2px, rgba(44,24,16,0.1) 3px);
+}
+
+.geo-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.wash {
+  position: absolute;
+  z-index: 1;
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+/* Color block panels — the new system for light cards */
+.color-block {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.card-content {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 48px 36px;
+  text-align: center;
+}
+
+/* Typography */
+.headline-lg {
+  font-family: 'Cormorant', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 1.35;
+}
+.headline-md {
+  font-family: 'Cormorant', serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.4;
+}
+.body-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  font-weight: 400;
+}
+.body-sm {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  font-weight: 400;
+}
+.label-text {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.amber-rule {
+  width: 48px;
+  height: 2px;
+  background: var(--amber);
+  margin: 16px auto;
+}
+.amber-rule-wide {
+  width: 100%;
+  max-width: 200px;
+  height: 1px;
+  background: var(--amber);
+  margin: 20px auto;
+  opacity: 0.5;
+}
+.diamond {
+  color: var(--amber);
+  font-size: 10px;
+  margin: 0 6px;
+}
+.price-strike {
+  font-family: 'Cormorant', serif;
+  font-size: 18px;
+  color: var(--sand);
+  text-decoration: line-through;
+  opacity: 0.7;
+}
+.price-big {
+  font-family: 'Cormorant', serif;
+  font-size: 48px;
+  font-weight: 600;
+  color: var(--brick);
+  line-height: 1;
+}
+.spots-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.kpc-logo {
+  font-family: 'Cormorant', serif;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.5;
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  white-space: nowrap;
+}
+
+.card-content.story-layout {
+  justify-content: flex-start;
+  padding-top: 100px;
+}
+.card-content.story-center {
+  justify-content: center;
+}
+.card-content.story-split {
+  justify-content: center;
+  gap: 0;
+}
+
+.deliverable-list {
+  text-align: left;
+  width: 100%;
+  max-width: 280px;
+}
+.deliverable-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.deliverable-item .diamond {
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+@media (max-width: 430px) {
+  .card-wrap { padding: 0 4px; }
+  .headline-lg { font-size: 26px; }
+  .card-content { padding: 40px 28px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <a href="#post1">Post 01</a>
+  <a href="#post2">Post 02</a>
+  <a href="#post3">Post 03</a>
+  <a href="#stories">Stories</a>
+  <a href="#highlight">Highlight</a>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     POST 01 — LAUNCH ANNOUNCEMENT CAROUSEL
+     ══════════════════════════════════════════════════════ -->
+<div class="section-label" id="post1">Post 01 — Launch Announcement</div>
+<div class="section-sublabel">Carousel — 4 Slides — Day 1</div>
+
+<!-- SLIDE 1: Cover / Hook — DARK -->
+<div class="card-wrap">
+  <div class="card-feed linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 340px; height: 340px; top: -80px; right: -60px; background: var(--blush); opacity: 0.18;"></div>
+    <div class="wash" style="width: 200px; height: 200px; top: -20px; right: 20px; background: var(--blush); opacity: 0.1;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M -20 380 Q 120 300 280 420" stroke="#D98859" stroke-width="0.5" opacity="0.35"/>
+      <path d="M 50 500 Q 200 350 400 400" stroke="#D98859" stroke-width="0.5" opacity="0.25"/>
+      <circle cx="320" cy="120" r="80" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="320" cy="120" r="40" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <line x1="0" y1="200" x2="160" y2="180" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 380 0 Q 350 100 400 200" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <rect x="60" y="100" width="120" height="160" rx="0" stroke="#D98859" stroke-width="0.3" opacity="0.1"/>
+    </svg>
+    <div class="card-content">
+      <div class="label-text" style="color: var(--amber); margin-bottom: 24px;">Kiana Prema Consulting</div>
+      <div class="headline-lg" style="color: var(--cream);">
+        I rebuilt the way I work.<br>
+        <span style="opacity: 0.6; font-size: 0.85em;">Here's what came out of it.</span>
+      </div>
+      <div class="amber-rule"></div>
+      <div class="body-sm" style="color: var(--sand); opacity: 0.6; margin-top: 8px;">Swipe to learn more &#8594;</div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 2: What CORE Is — DARK WITH BERRY -->
+<div class="card-wrap">
+  <div class="card-feed linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 280px; height: 400px; top: 60px; left: -100px; background: var(--berry); opacity: 0.2;"></div>
+    <div class="wash" style="width: 160px; height: 200px; bottom: -40px; left: 40px; background: var(--berry); opacity: 0.1;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 300 0 Q 280 160 400 280" stroke="#D98859" stroke-width="0.5" opacity="0.3"/>
+      <path d="M 200 500 Q 340 400 400 300" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="80" cy="440" r="60" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <line x1="250" y1="0" x2="400" y2="100" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <rect x="280" y="340" width="100" height="120" rx="0" stroke="#D98859" stroke-width="0.3" opacity="0.1"/>
+    </svg>
+    <div class="card-content" style="justify-content: flex-start; padding-top: 60px;">
+      <div class="label-text" style="color: var(--amber); margin-bottom: 20px;">What is CORE?</div>
+      <div class="headline-md" style="color: var(--cream); margin-bottom: 20px;">
+        A proven brand strategy framework
+      </div>
+      <div class="amber-rule"></div>
+      <div class="body-text" style="color: var(--cream); opacity: 0.8; margin-top: 16px; text-align: left; max-width: 300px;">
+        A structured process that gives practitioners, coaches, and founders total clarity on who they are, who they serve, and what makes them irreplaceable.
+      </div>
+      <div class="body-text" style="color: var(--blush); margin-top: 20px; font-style: italic; max-width: 300px;">
+        I've facilitated it for years. Now I've rebuilt how it's delivered — from the ground up.
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 3: What's Included — RICH LIGHT with color blocking -->
+<div class="card-wrap">
+  <div class="card-feed linen linen-light" style="background: linear-gradient(170deg, var(--cream) 0%, #f5ddd0 40%, var(--blush) 100%);">
+    <!-- Patina band at top -->
+    <div class="color-block" style="top: 0; left: 0; right: 0; height: 6px; background: var(--patina);"></div>
+    <!-- Berry accent strip -->
+    <div class="color-block" style="bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(180deg, transparent, rgba(140,3,67,0.12));"></div>
+    <!-- Sand wash -->
+    <div class="wash" style="width: 300px; height: 300px; top: -60px; right: -80px; background: var(--sand); opacity: 0.2;"></div>
+    <div class="wash" style="width: 200px; height: 200px; bottom: 40px; left: -40px; background: var(--patina); opacity: 0.12;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="360" cy="60" r="50" stroke="#D98859" stroke-width="0.7" opacity="0.2"/>
+      <circle cx="360" cy="60" r="25" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 0 100 Q 100 80 200 120" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <line x1="0" y1="420" x2="120" y2="400" stroke="#4E7B72" stroke-width="0.5" opacity="0.2"/>
+      <path d="M 300 500 Q 350 380 400 350" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <rect x="20" y="360" width="80" height="100" rx="0" stroke="#4E7B72" stroke-width="0.3" opacity="0.1"/>
+    </svg>
+    <div class="card-content" style="justify-content: flex-start; padding-top: 40px;">
+      <div class="label-text" style="color: var(--patina); margin-bottom: 8px;">What's Included</div>
+      <div class="amber-rule" style="margin: 8px auto 24px;"></div>
+      <div class="deliverable-list">
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>Half-day live CORE Strategy Session, facilitated by me</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>Creative Brief — brand identity, avatars, strategy matrices</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>3 Stylescapes — visual directions for your brand</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>All files professionally designed and ready to share</span>
+        </div>
+      </div>
+      <!-- Price teaser with color-blocked background -->
+      <div style="margin-top: 20px; padding: 14px 28px; background: rgba(44,24,16,0.08); border-radius: 6px; border-left: 3px solid var(--amber);">
+        <div class="body-sm" style="color: var(--dark); opacity: 0.6;">This engagement normally runs <strong style="color: var(--berry);">$7,500–$10,000</strong></div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--dark);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 4: Pricing + CTA — DARK -->
+<div class="card-wrap">
+  <div class="card-feed linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 200px; height: 200px; top: 40px; left: 50%; transform: translateX(-50%); background: var(--amber); opacity: 0.15;"></div>
+    <div class="wash" style="width: 100px; height: 100px; top: 70px; left: 50%; transform: translateX(-50%); background: var(--amber); opacity: 0.1;"></div>
+    <div class="wash" style="width: 300px; height: 200px; bottom: -60px; left: 50%; transform: translateX(-50%); background: var(--berry); opacity: 0.1;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 160 100 A 60 60 0 1 1 240 100 A 45 45 0 1 0 160 100" stroke="#D98859" stroke-width="1" opacity="0.5" fill="none"/>
+      <circle cx="200" cy="100" r="90" stroke="#D98859" stroke-width="0.3" opacity="0.15"/>
+      <circle cx="200" cy="100" r="120" stroke="#D98859" stroke-width="0.3" opacity="0.1"/>
+      <path d="M 0 300 Q 120 260 250 320" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <path d="M 150 500 Q 250 450 400 470" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content" style="justify-content: center; padding-top: 100px;">
+      <div class="label-text" style="color: var(--amber); margin-bottom: 12px;">Beta Access</div>
+      <div class="price-strike">$7,500–$10,000</div>
+      <div class="price-big" style="margin: 12px 0;">$997</div>
+      <div class="amber-rule" style="margin: 16px auto;"></div>
+      <div class="spots-label" style="margin-bottom: 24px;">3 Spots Only</div>
+      <div class="body-text" style="color: var(--cream); opacity: 0.7; max-width: 280px;">
+        You get the full deliverables. I get your feedback on a system I built from the ground up — my way back to doing the work I love.
+      </div>
+      <div style="margin-top: 28px; padding: 10px 28px; border: 1px solid var(--amber); border-radius: 4px;">
+        <div class="body-sm" style="color: var(--amber); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;">Link in Bio</div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     POST 02 — THE SHIFT CAROUSEL
+     ══════════════════════════════════════════════════════ -->
+<div class="section-label" id="post2">Post 02 — The Shift</div>
+<div class="section-sublabel">Carousel — 4 Slides — Day 3</div>
+
+<!-- SLIDE 1: Pattern Interrupt — BLUSH/PATINA GRADIENT with bold color bands -->
+<div class="card-wrap">
+  <div class="card-feed linen linen-light" style="background: linear-gradient(160deg, var(--blush) 0%, var(--cream) 40%, var(--bg) 60%, var(--sand) 100%);">
+    <!-- Patina color block — left edge band -->
+    <div class="color-block" style="top: 0; left: 0; width: 8px; height: 100%; background: linear-gradient(180deg, var(--patina), var(--amber));"></div>
+    <!-- Berry bottom accent -->
+    <div class="color-block" style="bottom: 0; left: 0; right: 0; height: 4px; background: var(--berry);"></div>
+    <!-- Warm washes -->
+    <div class="wash" style="width: 280px; height: 280px; top: -40px; right: -60px; background: var(--amber); opacity: 0.1;"></div>
+    <div class="wash" style="width: 200px; height: 200px; bottom: 40px; left: -20px; background: var(--patina); opacity: 0.08;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 380 0 Q 350 100 400 200" stroke="#D98859" stroke-width="0.6" opacity="0.25"/>
+      <circle cx="350" cy="420" r="50" stroke="#4E7B72" stroke-width="0.6" opacity="0.15"/>
+      <path d="M 40 480 Q 100 460 180 500" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content">
+      <div class="headline-lg" style="color: var(--dark); font-size: 34px;">
+        The pretty version<br>comes last.
+      </div>
+      <div class="amber-rule"></div>
+      <div class="body-sm" style="color: var(--berry); opacity: 0.6; margin-top: 8px;">Swipe to learn more &#8594;</div>
+    </div>
+    <div class="kpc-logo" style="color: var(--dark);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 2: What Goes Wrong — SPLIT COMPOSITION: cream top, berry bottom panel -->
+<div class="card-wrap">
+  <div class="card-feed" style="background: var(--cream); position: relative; overflow: hidden;">
+    <!-- Berry panel — bottom 40% -->
+    <div class="color-block" style="bottom: 0; left: 0; right: 0; height: 42%; background: linear-gradient(170deg, var(--berry) 0%, var(--dark) 100%);"></div>
+    <!-- Amber divider line -->
+    <div class="color-block" style="top: 58%; left: 10%; right: 10%; height: 2px; background: var(--amber); opacity: 0.6;"></div>
+    <!-- Linen overlay -->
+    <div style="position: absolute; inset: 0; z-index: 1; opacity: 0.04; background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(44,24,16,0.15) 2px, rgba(44,24,16,0.15) 3px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(44,24,16,0.15) 2px, rgba(44,24,16,0.15) 3px); pointer-events: none;"></div>
+    <!-- Blush wash on cream portion -->
+    <div class="wash" style="width: 200px; height: 200px; top: 20px; right: -40px; background: var(--blush); opacity: 0.15;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="60" cy="80" r="40" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 300 0 Q 340 60 320 140" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 0 400 Q 80 370 160 390" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="340" cy="440" r="30" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+    </svg>
+    <div class="card-content" style="justify-content: flex-start; padding: 36px 36px;">
+      <!-- Cream section -->
+      <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-bottom: 20px;">
+        <div class="body-text" style="color: var(--dark); text-align: left; max-width: 300px;">
+          I've watched brilliant practitioners spend thousands on logos, websites, and social templates — then change everything six months later because none of it felt right.
+        </div>
+        <div class="body-text" style="color: var(--dark); text-align: left; max-width: 300px; opacity: 0.6; margin-top: 12px;">
+          Not because the designer was bad.
+        </div>
+      </div>
+      <!-- Berry section -->
+      <div style="flex: 0.8; display: flex; flex-direction: column; justify-content: center; align-items: center; padding-top: 16px;">
+        <div class="headline-md" style="color: var(--cream);">
+          Because nobody did the<br>strategy underneath.
+        </div>
+        <div class="amber-rule" style="margin: 12px auto;"></div>
+        <div class="body-sm" style="color: var(--blush); opacity: 0.7;">
+          CORE is what comes first.
+        </div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 3: What CORE Actually Is — PATINA DOMINANT with warm accents -->
+<div class="card-wrap">
+  <div class="card-feed linen" style="background: linear-gradient(160deg, var(--patina) 0%, #3a6b63 40%, #2d5a52 100%);">
+    <!-- Warm washes -->
+    <div class="wash" style="width: 300px; height: 300px; top: -60px; right: -80px; background: var(--amber); opacity: 0.12;"></div>
+    <div class="wash" style="width: 200px; height: 200px; bottom: -40px; left: 20px; background: var(--blush); opacity: 0.1;"></div>
+    <!-- Gold accent bar top -->
+    <div class="color-block" style="top: 0; left: 0; right: 0; height: 3px; background: var(--amber);"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 20 80 Q 40 200 20 320" stroke="#D98859" stroke-width="0.5" opacity="0.25"/>
+      <path d="M 40 80 Q 60 200 40 320" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="340" cy="420" r="50" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <line x1="100" y1="0" x2="100" y2="60" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <circle cx="300" cy="80" r="30" stroke="#BFAF80" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content" style="justify-content: flex-start; padding-top: 52px;">
+      <div style="font-family: 'Cormorant', serif; font-style: italic; font-size: 42px; color: var(--cream); line-height: 1; margin-bottom: 8px;">CORE</div>
+      <div class="label-text" style="color: var(--sand); margin-bottom: 20px;">Brand Strategy Deep Dive</div>
+      <div class="amber-rule"></div>
+      <div class="body-text" style="color: var(--cream); text-align: left; max-width: 300px; margin-top: 16px;">
+        A facilitated session that extracts who you actually are — your culture, your voice, your edge, the people you're meant to serve — and translates it into a strategic brief that every visual, verbal, and business decision can build from.
+      </div>
+      <div style="margin-top: 24px; padding: 12px 20px; background: rgba(242,220,201,0.1); border-radius: 6px; border-left: 3px solid var(--amber);">
+        <div class="body-text" style="color: var(--cream); font-style: italic;">
+          Not a mood board. Not a brand quiz.<br>
+          Strategic clarity, built from the inside out.
+        </div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- SLIDE 4: CTA — WARM GRADIENT with berry accent -->
+<div class="card-wrap">
+  <div class="card-feed linen" style="background: linear-gradient(170deg, var(--cream) 0%, var(--blush) 35%, var(--amber) 70%, var(--sand) 100%);">
+    <!-- Berry accent panel at bottom -->
+    <div class="color-block" style="bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(180deg, transparent, rgba(140,3,67,0.2));"></div>
+    <!-- Dark accent strip top -->
+    <div class="color-block" style="top: 0; left: 0; right: 0; height: 4px; background: var(--dark);"></div>
+    <div class="wash" style="width: 200px; height: 200px; top: 40px; left: -40px; background: var(--patina); opacity: 0.1;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="200" cy="250" r="100" stroke="#2C1810" stroke-width="0.3" opacity="0.08"/>
+      <path d="M 60 500 Q 100 420 160 440" stroke="#2C1810" stroke-width="0.5" opacity="0.1"/>
+      <circle cx="350" cy="80" r="30" stroke="#2C1810" stroke-width="0.5" opacity="0.08"/>
+    </svg>
+    <div class="card-content">
+      <div class="headline-md" style="color: var(--dark);">
+        3 beta spots at $997
+      </div>
+      <div class="body-sm" style="color: var(--dark); opacity: 0.5; margin-top: 4px;">
+        normally $7,500–$10,000
+      </div>
+      <div class="amber-rule" style="background: var(--dark); opacity: 0.3; margin: 20px auto;"></div>
+      <div class="body-text" style="color: var(--dark); opacity: 0.8; max-width: 280px;">
+        This is for the practitioner or founder who knows she needs real brand strategy — not another Canva template — but the full engagement hasn't been accessible until now.
+      </div>
+      <div style="margin-top: 28px; padding: 10px 28px; background: var(--dark); border-radius: 4px;">
+        <div class="body-sm" style="color: var(--cream); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;">Link in Bio</div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--dark);">&#9671;</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     POST 03 — LAST CALL
+     ══════════════════════════════════════════════════════ -->
+<div class="section-label" id="post3">Post 03 — Last Call</div>
+<div class="section-sublabel">Single Image — Day 5</div>
+
+<div class="card-wrap">
+  <div class="card-feed linen linen-dark" style="background: linear-gradient(160deg, var(--dark) 0%, var(--berry) 100%);">
+    <div class="wash" style="width: 200px; height: 300px; top: 80px; right: -40px; background: var(--blush); opacity: 0.1;"></div>
+    <div class="wash" style="width: 300px; height: 200px; bottom: -40px; left: -60px; background: var(--berry); opacity: 0.15;"></div>
+    <svg class="geo-lines" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 280 80 A 40 40 0 1 1 340 140 A 30 30 0 1 0 280 80" stroke="#D98859" stroke-width="0.8" opacity="0.4" fill="none"/>
+      <circle cx="310" cy="110" r="60" stroke="#D98859" stroke-width="0.3" opacity="0.12"/>
+      <path d="M 0 350 Q 100 310 200 360" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <path d="M 200 500 Q 300 440 400 480" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <line x1="40" y1="0" x2="40" y2="120" stroke="#D98859" stroke-width="0.5" opacity="0.12"/>
+    </svg>
+    <div class="card-content">
+      <div class="headline-lg" style="color: var(--cream); max-width: 300px;">
+        I rebuilt the way I work. Now I'm inviting you in.
+      </div>
+      <div class="amber-rule"></div>
+      <div class="body-text" style="color: var(--cream); opacity: 0.7; margin-top: 12px; max-width: 280px;">
+        3 spots. $997. The full live experience — facilitated by me.
+      </div>
+      <div class="body-sm" style="color: var(--cream); opacity: 0.4; margin-top: 20px;">
+        If you've been thinking about it — trust the pull.
+      </div>
+      <div style="margin-top: 28px; padding: 10px 28px; border: 1px solid var(--amber); border-radius: 4px;">
+        <div class="body-sm" style="color: var(--amber); font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;">Link in Bio</div>
+      </div>
+    </div>
+    <div class="kpc-logo" style="color: var(--cream);">&#9671;</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     STORIES SEQUENCE
+     ══════════════════════════════════════════════════════ -->
+<div class="section-label" id="stories">Stories — Launch Day Sequence</div>
+<div class="section-sublabel">6 Stories — 1080 x 1920</div>
+
+<!-- STORY 1: The Hook — DARK, no poll options -->
+<div class="card-wrap">
+  <div class="card-story linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 200px; height: 200px; top: 60px; right: -40px; background: var(--amber); opacity: 0.06;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="280" cy="100" r="40" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <line x1="0" y1="300" x2="100" y2="290" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 300 640 Q 320 540 360 500" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content story-layout" style="padding-top: 180px;">
+      <div class="label-text" style="color: var(--amber); margin-bottom: 32px;">Quick question</div>
+      <div class="headline-lg" style="color: var(--cream); font-size: 26px; max-width: 280px;">
+        Does your brand match the level of work you actually deliver?
+      </div>
+      <div class="amber-rule" style="margin-top: 24px;"></div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY 2: The Problem — DARK with berry -->
+<div class="card-wrap">
+  <div class="card-story linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 360px; height: 200px; top: -40px; left: 0; background: var(--berry); opacity: 0.15;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="0" y1="320" x2="360" y2="320" stroke="#D98859" stroke-width="0.5" opacity="0.3"/>
+      <path d="M 300 0 Q 320 80 280 160" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="60" cy="580" r="30" stroke="#D98859" stroke-width="0.5" opacity="0.12"/>
+    </svg>
+    <div class="card-content story-split">
+      <div style="margin-bottom: 40px;">
+        <div class="headline-md" style="color: var(--cream); max-width: 280px;">
+          If you said "not even close"...
+        </div>
+        <div class="headline-md" style="color: var(--blush); margin-top: 8px;">
+          I built something for you.
+        </div>
+      </div>
+      <div class="amber-rule-wide" style="opacity: 0.3;"></div>
+      <div class="body-text" style="color: var(--cream); opacity: 0.7; margin-top: 24px; max-width: 280px;">
+        Most brilliant practitioners, coaches, and founders have one thing in common: their brand doesn't reflect the depth of their work.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY 3: The Solution — PATINA dominant -->
+<div class="card-wrap">
+  <div class="card-story linen" style="background: linear-gradient(170deg, var(--patina) 0%, #3a6b63 60%, var(--dark) 100%);">
+    <!-- Amber bar top -->
+    <div class="color-block" style="top: 0; left: 0; right: 0; height: 3px; background: var(--amber);"></div>
+    <div class="wash" style="width: 240px; height: 240px; top: 80px; right: -60px; background: var(--amber); opacity: 0.1;"></div>
+    <div class="wash" style="width: 200px; height: 200px; bottom: 80px; left: -40px; background: var(--blush); opacity: 0.08;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 20 100 Q 40 220 20 340" stroke="#D98859" stroke-width="0.5" opacity="0.25"/>
+      <path d="M 40 100 Q 60 220 40 340" stroke="#D98859" stroke-width="0.5" opacity="0.2"/>
+      <circle cx="300" cy="520" r="40" stroke="#BFAF80" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content story-center">
+      <div style="font-family: 'Cormorant', serif; font-style: italic; font-size: 56px; color: var(--cream); line-height: 1; margin-bottom: 8px;">CORE</div>
+      <div class="label-text" style="color: var(--sand); margin-bottom: 28px;">Brand Strategy Deep Dive</div>
+      <div class="amber-rule"></div>
+      <div class="body-text" style="color: var(--cream); margin-top: 20px; max-width: 280px;">
+        A half-day facilitated session that extracts who you are, who you serve, and what makes you irreplaceable.
+      </div>
+      <div style="margin-top: 24px; padding: 12px 20px; background: rgba(242,220,201,0.1); border-radius: 6px; border-left: 3px solid var(--amber);">
+        <div class="body-text" style="color: var(--cream); font-style: italic;">
+          Not a mood board. Not a brand quiz.<br>Strategic clarity, built from the inside out.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY 4: What You Get — SPLIT: blush gradient top, sand bottom panel -->
+<div class="card-wrap">
+  <div class="card-story" style="background: linear-gradient(180deg, var(--cream) 0%, var(--blush) 50%, var(--sand) 100%); position: relative; overflow: hidden;">
+    <!-- Dark panel bottom -->
+    <div class="color-block" style="bottom: 0; left: 0; right: 0; height: 25%; background: linear-gradient(180deg, transparent, rgba(44,24,16,0.15));"></div>
+    <!-- Patina accent bar -->
+    <div class="color-block" style="top: 0; left: 0; right: 0; height: 4px; background: var(--patina);"></div>
+    <!-- Linen -->
+    <div style="position: absolute; inset: 0; z-index: 1; opacity: 0.04; background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(44,24,16,0.1) 2px, rgba(44,24,16,0.1) 3px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(44,24,16,0.1) 2px, rgba(44,24,16,0.1) 3px); pointer-events: none;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="310" cy="80" r="30" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 0 560 Q 80 530 160 550" stroke="#D98859" stroke-width="0.5" opacity="0.12"/>
+      <circle cx="40" cy="600" r="20" stroke="#4E7B72" stroke-width="0.5" opacity="0.12"/>
+    </svg>
+    <div class="card-content story-center">
+      <div class="label-text" style="color: var(--berry); margin-bottom: 8px;">What's Included</div>
+      <div class="amber-rule" style="margin: 8px auto 28px;"></div>
+      <div class="deliverable-list" style="max-width: 260px;">
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>Half-day live CORE Strategy Session</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>Creative Brief</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>3 Stylescapes — visual directions</span>
+        </div>
+        <div class="deliverable-item" style="color: var(--dark);">
+          <span class="diamond">&#9671;</span>
+          <span>All files professionally designed & ready to share</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY 5: The Offer — DRAMATIC berry/dark -->
+<div class="card-wrap">
+  <div class="card-story linen linen-dark" style="background: linear-gradient(180deg, var(--dark) 0%, var(--berry) 80%, var(--dark) 100%);">
+    <div class="wash" style="width: 200px; height: 200px; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--brick); opacity: 0.15;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M 120 200 A 60 60 0 1 1 240 200 A 45 45 0 1 0 120 200" stroke="#D98859" stroke-width="1" opacity="0.4" fill="none"/>
+      <circle cx="180" cy="200" r="90" stroke="#D98859" stroke-width="0.3" opacity="0.12"/>
+      <line x1="0" y1="400" x2="360" y2="400" stroke="#D98859" stroke-width="0.5" opacity="0.15"/>
+    </svg>
+    <div class="card-content story-center" style="padding-top: 80px;">
+      <div class="body-sm" style="color: var(--cream); opacity: 0.5; margin-bottom: 8px;">This engagement normally runs</div>
+      <div class="price-strike" style="font-size: 22px;">$7,500–$10,000</div>
+      <div style="margin: 24px 0;">
+        <div class="price-big" style="font-size: 64px;">$997</div>
+      </div>
+      <div class="amber-rule"></div>
+      <div class="spots-label" style="margin-top: 16px; font-size: 16px;">3 Spots</div>
+      <div class="body-text" style="color: var(--cream); opacity: 0.6; margin-top: 24px; max-width: 260px;">
+        You get the full deliverables. I get your feedback on a system I built from the ground up.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY 6: The CTA — DARK minimal -->
+<div class="card-wrap">
+  <div class="card-story linen linen-dark" style="background: var(--dark);">
+    <div class="wash" style="width: 160px; height: 160px; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--blush); opacity: 0.1;"></div>
+    <svg class="geo-lines" viewBox="0 0 360 640" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <line x1="60" y1="560" x2="300" y2="560" stroke="#D98859" stroke-width="0.5" opacity="0.25"/>
+    </svg>
+    <div class="card-content story-center">
+      <div class="headline-md" style="color: var(--cream); max-width: 280px;">
+        If your work is extraordinary but your brand hasn't caught up yet —
+      </div>
+      <div class="headline-md" style="color: var(--blush); margin-top: 8px;">
+        this is for you.
+      </div>
+      <div class="amber-rule" style="margin: 28px auto;"></div>
+      <div class="spots-label">3 spots &middot; $997</div>
+      <div style="margin-top: 32px; padding: 12px 32px; background: var(--amber); border-radius: 4px;">
+        <div class="body-sm" style="color: var(--dark); font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;">Tap to Learn More</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════
+     HIGHLIGHT COVER
+     ══════════════════════════════════════════════════════ -->
+<div class="section-label" id="highlight">Story Highlight Cover</div>
+<div class="section-sublabel">CORE Beta — 1080 x 1080 circle</div>
+
+<div class="card-wrap" style="display: flex; justify-content: center;">
+  <div class="card-square linen linen-dark" style="background: var(--dark);">
+    <svg class="geo-lines" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="70" stroke="#D98859" stroke-width="0.5" opacity="0.25"/>
+      <circle cx="100" cy="100" r="50" stroke="#D98859" stroke-width="0.3" opacity="0.15"/>
+      <path d="M 80 80 A 20 20 0 1 1 120 80 A 15 15 0 1 0 80 80" stroke="#4E7B72" stroke-width="0.8" opacity="0.4" fill="none"/>
+    </svg>
+    <div class="card-content" style="padding: 0;">
+      <div style="font-family: 'Cormorant', serif; font-style: italic; font-size: 24px; color: var(--amber);">CORE</div>
+    </div>
+  </div>
+</div>
+
+<div style="height: 60px;"></div>
+
+</body>
+</html>
