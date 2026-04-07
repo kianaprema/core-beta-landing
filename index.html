@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CORE Strategy Session — Beta Access | Kiana Prema Consulting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --brick:   #BF5454;
+  --berry:   #8C0343;
+  --amber:   #D98859;
+  --sand:    #BFAF80;
+  --patina:  #4E7B72;
+  --blush:   #F2AB9B;
+  --cream:   #F2DCC9;
+  --dark:    #2C1810;
+  --mid:     #7A4A3A;
+  --muted:   #B09A8C;
+  --border:  #E8DAD0;
+  --bg:      #FAF6F1;
+  --white:   #FFFFFF;
+  --font-display: 'Cormorant', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--dark);
+  font-size: 16px;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── LAYOUT ── */
+.container { max-width: 760px; margin: 0 auto; padding: 0 32px; }
+.wide { max-width: 900px; }
+
+/* ── HERO ── */
+.hero {
+  background: linear-gradient(160deg, var(--dark) 0%, #1a0f0a 60%, var(--berry) 100%);
+  color: var(--cream);
+  padding: 100px 32px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--amber);
+}
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: 52px;
+  font-weight: 300;
+  line-height: 1.15;
+  margin-bottom: 24px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero h1 em {
+  font-weight: 400;
+  color: var(--blush);
+  font-style: italic;
+}
+.hero-sub {
+  font-size: 18px;
+  font-weight: 300;
+  color: rgba(242,220,201,0.75);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  line-height: 1.7;
+}
+.hero-badge {
+  display: inline-block;
+  background: rgba(217,136,89,0.2);
+  border: 1px solid rgba(217,136,89,0.4);
+  color: var(--amber);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 24px;
+  margin-bottom: 40px;
+}
+.hero-cta {
+  display: inline-block;
+  background: var(--brick);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px 40px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+  letter-spacing: 0.02em;
+}
+.hero-cta:hover { background: #a84848; transform: translateY(-1px); }
+.hero-spots {
+  margin-top: 16px;
+  font-size: 13px;
+  color: rgba(242,220,201,0.5);
+}
+
+/* ── SECTION BASE ── */
+.section {
+  padding: 72px 32px;
+}
+.section-alt {
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.section-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-weight: 400;
+  color: var(--dark);
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+.section-body {
+  font-size: 16px;
+  color: var(--mid);
+  line-height: 1.8;
+  max-width: 620px;
+}
+.section-body strong { color: var(--dark); font-weight: 500; }
+
+/* ── PROBLEM / RECOGNITION ── */
+.recognition-list {
+  margin: 32px 0;
+  padding: 0;
+  list-style: none;
+}
+.recognition-list li {
+  padding: 14px 0 14px 32px;
+  position: relative;
+  font-size: 16px;
+  color: var(--mid);
+  line-height: 1.6;
+  border-bottom: 1px solid var(--border);
+}
+.recognition-list li:last-child { border-bottom: none; }
+.recognition-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--amber);
+}
+
+/* ── WHAT YOU GET ── */
+.deliverable-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin: 36px 0;
+}
+.deliverable-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px 32px;
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+.deliverable-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+.deliverable-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--dark);
+  margin-bottom: 6px;
+}
+.deliverable-desc {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ── TESTIMONIAL ── */
+.testimonial-block {
+  background: linear-gradient(160deg, var(--dark) 0%, #1a0f0a 60%, var(--berry) 100%);
+  border-radius: 14px;
+  padding: 48px 44px;
+  margin: 40px auto;
+  max-width: 680px;
+  text-align: center;
+  position: relative;
+}
+.testimonial-block::before {
+  content: '\201C';
+  font-family: var(--font-display);
+  font-size: 80px;
+  color: var(--amber);
+  position: absolute;
+  top: 16px;
+  left: 32px;
+  line-height: 1;
+  opacity: 0.6;
+}
+.testimonial-quote {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--cream);
+  line-height: 1.7;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 1;
+}
+.testimonial-author {
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--amber);
+  letter-spacing: 0.06em;
+}
+.testimonial-role {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: rgba(242,220,201,0.55);
+  margin-top: 4px;
+}
+
+/* ── PRICING CARD ── */
+.pricing-card {
+  background: var(--white);
+  border: 2px solid var(--amber);
+  border-radius: 14px;
+  padding: 48px 44px;
+  max-width: 520px;
+  margin: 40px auto;
+  text-align: center;
+  position: relative;
+}
+.pricing-card::before {
+  content: 'BETA ACCESS';
+  position: absolute;
+  top: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--amber);
+  color: var(--dark);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  padding: 5px 20px;
+  border-radius: 20px;
+}
+.pricing-original {
+  font-size: 14px;
+  color: var(--muted);
+  text-decoration: line-through;
+  margin-bottom: 4px;
+}
+.pricing-amount {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  color: var(--brick);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.pricing-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 28px;
+}
+.pricing-includes {
+  text-align: left;
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+.pricing-includes li {
+  padding: 8px 0 8px 28px;
+  position: relative;
+  font-size: 15px;
+  color: var(--dark);
+  line-height: 1.5;
+}
+.pricing-includes li::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  color: var(--amber);
+  font-size: 12px;
+}
+.pricing-cta {
+  display: block;
+  width: 100%;
+  background: var(--brick);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  padding: 16px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.2s;
+}
+.pricing-cta:hover { background: #a84848; }
+.pricing-urgency {
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--brick);
+  font-weight: 500;
+}
+
+/* ── WHO THIS IS FOR ── */
+.for-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+.for-card {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 28px;
+}
+.for-card-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--dark);
+  margin-bottom: 10px;
+}
+.for-card-desc {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.6;
+}
+
+/* ── ABOUT KIKI ── */
+.about-card {
+  display: flex;
+  gap: 32px;
+  align-items: flex-start;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 36px;
+  margin: 32px 0;
+}
+.about-portrait {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--blush), var(--cream));
+  border: 3px solid var(--amber);
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 36px;
+  font-style: italic;
+  color: var(--brick);
+}
+.about-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--dark);
+  margin-bottom: 4px;
+}
+.about-title {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brick);
+  margin-bottom: 14px;
+}
+.about-text {
+  font-size: 14px;
+  color: var(--mid);
+  line-height: 1.7;
+}
+
+/* ── FAQ ── */
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  padding: 24px 0;
+}
+.faq-item:last-child { border-bottom: none; }
+.faq-q {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--dark);
+  margin-bottom: 10px;
+  cursor: default;
+}
+.faq-a {
+  font-size: 15px;
+  color: var(--mid);
+  line-height: 1.7;
+}
+
+/* ── FINAL CTA ── */
+.final-cta {
+  background: linear-gradient(160deg, var(--dark) 0%, var(--berry) 100%);
+  color: var(--cream);
+  padding: 80px 32px;
+  text-align: center;
+}
+.final-cta h2 {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+.final-cta h2 em {
+  font-weight: 400;
+  color: var(--blush);
+}
+.final-cta p {
+  font-size: 16px;
+  color: rgba(242,220,201,0.7);
+  margin-bottom: 32px;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ── FOOTER ── */
+.footer {
+  padding: 40px 32px;
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+.footer span { color: var(--amber); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .hero h1 { font-size: 36px; }
+  .hero { padding: 72px 24px 60px; }
+  .section { padding: 56px 24px; }
+  .for-grid { grid-template-columns: 1fr; }
+  .about-card { flex-direction: column; text-align: center; align-items: center; }
+  .pricing-amount { font-size: 44px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">Kiana Prema Consulting</div>
+  <h1>I rebuilt the way I work.<br>Now I'm inviting <em>you</em> in.</h1>
+  <p class="hero-sub">The full CORE Strategy Session experience — brand identity, creative brief, and three visual directions — delivered through a new system I built from the ground up. Three founding beta spots.</p>
+  <div class="hero-badge">3 Founding Beta Spots</div>
+  <br>
+  <a href="https://buy.stripe.com/bJe28r3VH4NebNSbrs5kk0k" class="hero-cta">Claim Your Beta Spot — $997</a>
+  <div class="hero-spots">Normally $7,500–$10,000 &middot; Founding beta rate</div>
+</div>
+
+<!-- ═══════════════════════ THE PROBLEM ═══════════════════════ -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Sound Familiar?</div>
+    <div class="section-title">You built something extraordinary.<br>Your brand hasn't caught up yet.</div>
+    <div class="section-body">
+      <p>You're brilliant at what you do. Your clients rave about you. Referrals keep coming. But when someone looks you up — your website, your social, your materials — it doesn't match the level of work you actually deliver.</p>
+    </div>
+    <ul class="recognition-list">
+      <li>Your brand was DIY'd or built by a designer who made things "pretty" but couldn't articulate the strategy underneath</li>
+      <li>You change colors, fonts, and messaging every few months because nothing feels like <em>you</em></li>
+      <li>You're ready to scale beyond 1:1 — a group program, a certification, a retreat — but can't articulate your methodology well enough to sell it at that level</li>
+      <li>Past "brand experts" felt either too corporate and clinical, or too surface-level and fluffy</li>
+      <li>You know you need strategic clarity, not just a new logo — but you haven't found someone who operates at your level</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ═══════════════════════ THE SOLUTION ═══════════════════════ -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-eyebrow">The CORE Strategy Session</div>
+    <div class="section-title">Brand clarity in a single session.</div>
+    <div class="section-body">
+      <p>CORE is a structured facilitation process that extracts the truth of who you are, who you serve, and what makes you irreplaceable — then translates it into a polished, actionable brand strategy.</p>
+      <p style="margin-top:16px;">No vague mood boards. No generic brand archetypes. A <strong>precise, strategic map</strong> of your brand identity, ideal client, and growth priorities — built from the inside out.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ WHAT YOU GET ═══════════════════════ -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">What's Included</div>
+    <div class="section-title">Everything from a $7,500–$10,000 engagement.<br>At a founding-member price.</div>
+
+    <div class="deliverable-grid">
+      <div class="deliverable-card">
+        <div class="deliverable-icon">&#9671;</div>
+        <div>
+          <div class="deliverable-title">Live CORE Strategy Session</div>
+          <div class="deliverable-desc">A half-day facilitated deep dive into your brand attributes, identity, ideal client, and strategic priorities. Up to four hours of focused strategy work — Kiana leads, the system captures, nothing gets lost.</div>
+        </div>
+      </div>
+
+      <div class="deliverable-card">
+        <div class="deliverable-icon">&#9670;</div>
+        <div>
+          <div class="deliverable-title">Branded Creative Brief</div>
+          <div class="deliverable-desc">Your Brand Identity Statement, Brand Attributes Matrix, Ideal Client Avatars (with AI portraits), and three prioritized strategy matrices — Awareness, Revenue, and Efficiency. Professionally designed. Ready to share with collaborators, investors, or your team.</div>
+        </div>
+      </div>
+
+      <div class="deliverable-card">
+        <div class="deliverable-icon">&#9672;</div>
+        <div>
+          <div class="deliverable-title">Three Stylescapes</div>
+          <div class="deliverable-desc">Three distinct visual directions for your brand — typography, color palettes, textures, and brandmark concepts — each rooted in your brand attributes. You choose the direction. No more guessing.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TESTIMONIAL ═══════════════════════ -->
+<div class="section">
+  <div class="container">
+    <div class="testimonial-block">
+      <div class="testimonial-quote">The CORE strategy provided a grounded, simple and strategic framework that empowered a critical breakthrough in terms of identity and brand. She was present, focused, clear, candid, professional and patient. Kiana listens deeply for essence and has a knack for sensing and reflecting the wild truth with ease and grace.</div>
+      <div class="testimonial-author">Corin Blanchard</div>
+      <div class="testimonial-role">Board Member — All Seasons Chalice · The StarHouse</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ WHO THIS IS FOR ═══════════════════════ -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-eyebrow">Is This You?</div>
+    <div class="section-title">Built for practitioners, healers, and<br>visionary founders.</div>
+
+    <div class="for-grid">
+      <div class="for-card">
+        <div class="for-card-title">The Brilliant Healer</div>
+        <div class="for-card-desc">You're a practitioner, clinician, or therapist with deep expertise. Your work transforms lives, but your brand looks like every other wellness website. You need strategy that holds both the science and the soul.</div>
+      </div>
+      <div class="for-card">
+        <div class="for-card-title">The Scaling Coach</div>
+        <div class="for-card-desc">You hit six figures with a DIY brand. Now you're launching a certification, writing a book, or facilitating at major retreats — and your brand materials don't match the invitations you're receiving.</div>
+      </div>
+      <div class="for-card">
+        <div class="for-card-title">The Visionary Founder</div>
+        <div class="for-card-desc">You're building something bigger than a business — a retreat center, a movement, a methodology. The vision lives in your head but nothing is strategically documented. Investors and collaborators need to see it.</div>
+      </div>
+      <div class="for-card">
+        <div class="for-card-title">The Sacred Entrepreneur</div>
+        <div class="for-card-desc">Your work lives at the intersection of business and mission. You've been burned by strategists who stripped out the magic, or designers who couldn't hold the complexity. You need someone fluent in both languages.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ WHY BETA ═══════════════════════ -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Why Beta?</div>
+    <div class="section-title">You're not getting less. You're getting in first.</div>
+    <div class="section-body">
+      <p>The CORE methodology has been used with clients across industries — from education cooperatives to cannabis value chains to conscious wellness brands. It's proven.</p>
+      <p style="margin-top:16px;">What's new is <strong>how it's delivered.</strong> Many of you know that two years ago, my world changed — and so did the way I work. What came out of that season was a breakthrough: a digital facilitation system that captures, categorizes, and builds your brand brief in real time during our session. It's the same strategic depth, rebuilt from the ground up for how I show up now. You'll be among the first three people to experience it.</p>
+      <p style="margin-top:16px;">In exchange for your feedback on the experience, you get the full deliverable package at a founding-member rate. The output is identical to a $7,500–$10,000 engagement. The only difference is that you're helping shape how it's delivered — and getting access at a price that makes this possible for practitioners who know they need real brand strategy but haven't had the entry point until now.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PRICING ═══════════════════════ -->
+<div class="section section-alt" id="pricing">
+  <div class="container" style="text-align:center;">
+    <div class="section-eyebrow">Investment</div>
+    <div class="section-title" style="margin-bottom:8px;">Founding Beta Access</div>
+    <p style="font-size:15px;color:var(--mid);margin-bottom:0;">Full CORE Strategy Session + Creative Brief + 3 Stylescapes</p>
+
+    <div class="pricing-card">
+      <div class="pricing-original">$7,500–$10,000</div>
+      <div class="pricing-amount">$997</div>
+      <div class="pricing-note">One-time investment &middot; Founding beta rate</div>
+
+      <ul class="pricing-includes">
+        <li>Half-day live CORE Strategy Session with Kiana Prema (up to 4 hours)</li>
+        <li>Branded Creative Brief (Brand Attributes, BIS, Client Avatars, Strategy Matrices)</li>
+        <li>Three Stylescapes with typography, color, and brandmark concepts</li>
+        <li>AI-generated ideal client portraits</li>
+        <li>All files delivered as polished HTML + PDF</li>
+        <li>First-to-experience the new digital facilitation system</li>
+      </ul>
+
+      <a href="https://buy.stripe.com/bJe28r3VH4NebNSbrs5kk0k" class="pricing-cta">Claim Your Beta Spot — $997</a>
+      <div class="pricing-urgency">Only 3 spots available. This founding rate will not be offered again.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ ABOUT KIKI ═══════════════════════ -->
+<div class="section">
+  <div class="container">
+    <div class="section-eyebrow">Your Strategist</div>
+    <div class="section-title">Meet Kiana Prema.</div>
+
+    <div class="about-card">
+      <div class="about-portrait">KP</div>
+      <div>
+        <div class="about-name">Kiana Prema</div>
+        <div class="about-title">Intuitive Brand Engineer &amp; Business Growth Strategist</div>
+        <div class="about-text">
+          Kiana is a chemical engineer turned brand strategist who works at the intersection of precision and magic. She translates large, complex, deeply felt visions into clean, strategic brand systems — without flattening the soul out of them. Over the last two years, she's been on a journey many of you have watched unfold — and what emerged on the other side is a new chapter: the same strategic depth her clients have always experienced, delivered through a system she built from the ground up. She's back to doing this work, and she's excited about what it means. CORE is the brand strategy framework at the heart of her practice — a proven methodology she has facilitated for years across diverse industries. This beta marks the beginning.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FAQ ═══════════════════════ -->
+<div class="section section-alt">
+  <div class="container">
+    <div class="section-eyebrow">Questions</div>
+    <div class="section-title">Before you decide.</div>
+
+    <div class="faq-item">
+      <div class="faq-q">What does "beta" mean? Am I getting a lesser experience?</div>
+      <div class="faq-a">No. You're getting the exact same deliverables as a full-price client. The "beta" refers to a new digital facilitation system — rebuilt from the ground up — that captures and organizes the session in real time. You'll be among the first three people to experience it. In exchange for your honest feedback on the process, you get the full engagement at the founding beta rate.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">How does the session work?</div>
+      <div class="faq-a">We block a half day together on Zoom — up to four hours, though some sessions wrap faster. Kiana facilitates a structured deep dive that moves through brand attributes, identity, ideal client profiling, and strategic prioritization. The digital system captures everything in real time — you can see the brief being built as we talk. After the session, Kiana refines the output and delivers your polished Creative Brief and Stylescapes.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What if I already have a brand? Is this a rebrand?</div>
+      <div class="faq-a">CORE works whether you're starting fresh or repositioning. It extracts the essence of who you are and what you do — then gives you a strategic framework to build (or rebuild) from. Many clients come in with a DIY brand that served them at one stage but no longer reflects where they're headed.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Is this just for wellness/healing practitioners?</div>
+      <div class="faq-a">The CORE methodology works across industries. That said, Kiana's sweet spot is mission-driven founders and practitioners — people whose work lives at the intersection of expertise and purpose. If that's you, this will feel like coming home.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">When will sessions be scheduled?</div>
+      <div class="faq-a">Once you claim your spot, you'll receive a scheduling link to book your half-day session at a time that works for both of us. Plan to block four hours — some sessions wrap sooner, but we want the space. Sessions will be scheduled within 2-3 weeks of purchase.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">What's the refund policy?</div>
+      <div class="faq-a">Due to the limited number of spots, beta spots are non-refundable once confirmed. If you need to reschedule, we'll accommodate that.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FINAL CTA ═══════════════════════ -->
+<div class="final-cta">
+  <h2>Your brand should feel like <em>you.</em></h2>
+  <p>Three spots. Full deliverables. $997 instead of $7,500–$10,000. The founding beta rate won't come around again.</p>
+  <a href="https://buy.stripe.com/bJe28r3VH4NebNSbrs5kk0k" class="hero-cta">Claim Your Beta Spot</a>
+  <div class="hero-spots" style="margin-top:16px;">3 founding beta spots &middot; $997 investment</div>
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<div class="footer">
+  <span>&#9671;</span><br>
+  Kiana Prema Consulting &middot; Intuitive Brand Engineer &amp; Business Growth Strategist<br>
+  &copy; 2026 Kiana Prema Consulting. All rights reserved.
+</div>
+
+</body>
+</html>
